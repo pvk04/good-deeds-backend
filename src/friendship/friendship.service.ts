@@ -39,12 +39,15 @@ export class FriendshipService {
     return this.friendshipRepository.save(friendship);
   }
 
-  async getFriends(user: User): Promise<User[]> {
+  async getFriends(user: User) {
     const friendships = await this.friendshipRepository.find({
       where: { user },
       relations: ['friend'],
     });
-    return friendships.map((f) => f.friend);
+    return friendships.map(({ friend }) => {
+      delete friend.password;
+      return friend;
+    });
   }
 
   async findFriendByUsername(username: string, user: User): Promise<User> {

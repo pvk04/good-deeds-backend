@@ -25,7 +25,10 @@ export class GoodDeedService {
       ...createGoodDeedDto,
       user,
     });
-    return this.goodDeedRepository.save(goodDeed);
+    const result = await this.goodDeedRepository.save(goodDeed);
+    delete result.user;
+
+    return result;
   }
 
   async update(
