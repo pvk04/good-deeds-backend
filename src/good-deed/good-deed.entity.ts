@@ -15,6 +15,6 @@ export class GoodDeed {
   @Column({ default: false })
   completed: boolean;
 
-  @ManyToOne(() => User, (user) => user.goodDeeds)
+  @ManyToOne(() => User, (user) => user.goodDeeds, { onDelete: 'CASCADE' })
   user: User;
 }
