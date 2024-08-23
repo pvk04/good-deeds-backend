@@ -23,6 +23,7 @@ export class GoodDeedService {
   ): Promise<GoodDeed> {
     const goodDeed = this.goodDeedRepository.create({
       ...createGoodDeedDto,
+      completed: false,
       user,
     });
     const result = await this.goodDeedRepository.save(goodDeed);
