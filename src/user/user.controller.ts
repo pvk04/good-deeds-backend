@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Patch,
   Req,
   UseGuards,
@@ -15,6 +16,12 @@ import { User } from './user.entity';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get()
+  async getUser(@Req() { user }) {
+    delete user.password;
+    return user;
+  }
 
   @Patch()
   async updateUser(@Body() updateUserDto: UpdateUserDto, @Req() user: User) {
