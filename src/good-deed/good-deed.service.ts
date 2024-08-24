@@ -14,7 +14,10 @@ export class GoodDeedService {
   ) {}
 
   async findAllByUser(user: User): Promise<GoodDeed[]> {
-    return this.goodDeedRepository.find({ where: { user } });
+    return this.goodDeedRepository.find({
+      where: { user },
+      order: { id: 'desc' },
+    });
   }
 
   async create(

@@ -8,5 +8,6 @@ import { GoodDeed } from './good-deed.entity';
   imports: [TypeOrmModule.forFeature([GoodDeed])],
   providers: [GoodDeedService],
   controllers: [GoodDeedController],
+  exports: [GoodDeedService],
 })
 export class GoodDeedModule {}
