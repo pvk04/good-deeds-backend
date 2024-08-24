@@ -1,25 +1,48 @@
-import { Controller, Post, Get, Body, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  UseGuards,
+  Req,
+  Patch,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { FriendshipService } from './friendship.service';
 import { AddFriendDto } from './dto/add-friend.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { User } from '../user/user.entity';
 
 @Controller('friends')
 @UseGuards(JwtAuthGuard)
 export class FriendshipController {
   constructor(private readonly friendshipService: FriendshipService) {}
 
-  @Post()
-  async addFriend(
-    @Body() addFriendDto: AddFriendDto,
+  @Get(':username/good-deeds')
+  async getFriendsGoodDeeds(
+    @Param('username') username: string,
     @Req() { user },
-  ): Promise<string> {
-    await this.friendshipService.addFriend(addFriendDto, user);
-    return 'Friend added successfully';
+  ) {
+    return this.friendshipService.findFriendByUsername(username, user);
   }
 
   @Get()
-  async getFriends(@Req() { user }): Promise<User[]> {
-    return this.friendshipService.getFriends(user);
+  async getFriendship(@Req() { user }) {
+    return this.friendshipService.getFriendshipInfo(user);
+  }
+
+  @Post()
+  async createFriendship(@Body() addFriendDto: AddFriendDto, @Req() { user }) {
+    return await this.friendshipService.createFriendship(addFriendDto, user);
+  }
+
+  @Patch(':id')
+  async acceptFriendship(@Param('id') id: number, @Req() { user }) {
+    return this.friendshipService.acceptFriendship(id, user);
+  }
+
+  @Delete(':id')
+  async deleteFriendship(@Param('id') id: number, @Req() { user }) {
+    return this.friendshipService.deleteFriendship(id, user);
   }
 }
